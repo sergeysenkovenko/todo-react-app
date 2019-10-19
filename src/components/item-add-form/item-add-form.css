@@ -1,0 +1,5 @@
+.invalid-input,
+.invalid-input:focus {
+  border: 1px solid red;
+  box-shadow: none;
+}
