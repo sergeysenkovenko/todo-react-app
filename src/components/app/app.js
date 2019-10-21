@@ -29,7 +29,6 @@ export default class App extends Component {
         ...todoData.slice(0, index),
         ...todoData.slice(index + 1)
       ];
-      this.persistData(newArr);
       return {
         todoData: newArr
       };
@@ -40,7 +39,6 @@ export default class App extends Component {
     const newItem = this.createItem(text);
     this.setState(({ todoData }) => {
       const newArr = [...todoData, newItem];
-      this.persistData(newArr);
       return {
         todoData: newArr
       };
@@ -58,7 +56,6 @@ export default class App extends Component {
   onToggleImportant = id => {
     this.setState(({ todoData }) => {
       const newArr = this.toggleProperty(todoData, id, "important");
-      this.persistData(newArr);
       return {
         todoData: newArr
       };
@@ -68,7 +65,6 @@ export default class App extends Component {
   onToggleDone = id => {
     this.setState(({ todoData }) => {
       const newArr = this.toggleProperty(todoData, id, "done");
-      this.persistData(newArr);
       return {
         todoData: newArr
       };
@@ -134,6 +130,11 @@ export default class App extends Component {
         };
       }
     });
+  }
+
+  componentDidUpdate() {
+    const { todoData } = this.state;
+    this.persistData(todoData);
   }
 
   render() {
