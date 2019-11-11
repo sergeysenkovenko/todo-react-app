@@ -8,7 +8,7 @@ import "./app.css";
 
 export default class App extends Component {
   state = {
-    todoData: [],
+    todoData: this.readStorage(),
     search: "",
     filter: "all"
   };
@@ -113,28 +113,18 @@ export default class App extends Component {
     localStorage.setItem("items", JSON.stringify(data));
   };
 
-  readStorage = () => {
-    return JSON.parse(localStorage.getItem("items"));
+  readStorage () {
+    const storage = JSON.parse(localStorage.getItem("items"));
+      if(!storage){
+        return []
+      }
+    return storage
   };
 
-  componentDidMount() {
-    this.setState(() => {
-      const storage = this.readStorage();
-      if (storage) {
-        return {
-          todoData: storage
-        };
-      } else {
-        return {
-          todoData: []
-        };
-      }
-    });
-  }
-
-  componentDidUpdate() {
-    const { todoData } = this.state;
-    this.persistData(todoData);
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.todoData !== prevState.todoData){
+      this.persistData(this.state.todoData);
+    }
   }
 
   render() {
